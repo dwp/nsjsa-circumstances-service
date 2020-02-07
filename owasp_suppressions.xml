@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+  <suppress>
+    <notes>Latest Jar version has been used and there is no scope to fix the below vulnerabilities</notes>
+    <filePath regex="true">.*(spring-security-.*-5.2.1.RELEASE.jar|spring-security-.*-1.0.9.RELEASE.jar)$</filePath>
+    <cve>CVE-2018-1258</cve>
+    <cve>CVE-2011-2731</cve>
+    <cve>CVE-2011-2732</cve>
+    <cve>CVE-2012-5055</cve>
+  </suppress>
+  <suppress>
+    <notes>Suppressing issue with tomcat as it is not applicable</notes>
+    <filePath regex="true">.*(tomcat-embed-.*-9.0.29.jar)$</filePath>
+    <cve>CVE-2019-17563</cve>
+    <cpe>cpe:/a:apache:tomcat</cpe>
+  </suppress>
+  <suppress>
+    <notes>Suppressing until we move to Spring Boot 2.2.3</notes>
+    <packageUrl regex="true">^.*$</packageUrl>
+    <cve>CVE-2020-5398</cve>
+    <cve>CVE-2020-5397</cve>
+  </suppress>
+</suppressions>
