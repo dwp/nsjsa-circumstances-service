@@ -30,7 +30,7 @@
         <google.findbugs.version>3.0.2</google.findbugs.version>
         <jacoco.version>0.8.2</jacoco.version>
         <hibernate-types.version>2.8.0</hibernate-types.version>
-        <commons.codec.version>1.10</commons.codec.version>
+        <commons.codec.version>1.13</commons.codec.version>
     </properties>
     <dependencyManagement>
         <dependencies>
