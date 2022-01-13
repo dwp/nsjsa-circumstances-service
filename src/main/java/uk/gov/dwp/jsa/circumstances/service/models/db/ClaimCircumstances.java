@@ -1,6 +1,5 @@
 package uk.gov.dwp.jsa.circumstances.service.models.db;
 
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
@@ -8,6 +7,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.UpdateTimestamp;
 import uk.gov.dwp.jsa.circumstances.service.models.http.CircumstancesRequest;
+import uk.gov.dwp.jsa.security.encryption.SecuredJsonBinaryType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +20,7 @@ import java.util.UUID;
 import static java.util.Locale.ENGLISH;
 
 @Entity
-@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+@TypeDef(name = "jsonb", typeClass = SecuredJsonBinaryType.class)
 public class ClaimCircumstances {
 
     @Id
@@ -45,6 +45,7 @@ public class ClaimCircumstances {
     private String source;
     private String serviceVersion;
     private Locale locale;
+    private boolean encryptedJson;
 
     public ClaimCircumstances() {
     }
@@ -144,6 +145,14 @@ public class ClaimCircumstances {
         this.serviceVersion = serviceVersion;
     }
 
+    public boolean isEncryptedJson() {
+        return encryptedJson;
+    }
+
+    public void setEncryptedJson(final boolean encryptedJson) {
+        this.encryptedJson = encryptedJson;
+    }
+
     public void update(final CircumstancesRequest circumstancesRequest, final UUID claimantId, final String hash,
                        final String source, final String version, final String locale) {
         this.claimCircumstancesJson = circumstancesRequest;
@@ -152,6 +161,7 @@ public class ClaimCircumstances {
         this.source = source;
         this.serviceVersion = version;
         this.locale = localeFromString(locale);
+        this.encryptedJson = true;
 
     }
 

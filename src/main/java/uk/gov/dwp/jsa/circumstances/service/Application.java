@@ -5,11 +5,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.context.annotation.ComponentScan;
 import uk.gov.dwp.jsa.circumstances.service.config.ServiceObjectMapperProvider;
 
+@EnableAsync(proxyTargetClass = true)
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+@EnableTransactionManagement
 @ComponentScan(value = "uk.gov.dwp.jsa")
 public class Application {
 

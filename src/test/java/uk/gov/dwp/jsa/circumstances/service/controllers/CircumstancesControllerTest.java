@@ -10,6 +10,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import uk.gov.dwp.jsa.adaptors.http.api.ApiResponse;
@@ -179,4 +180,24 @@ public class CircumstancesControllerTest {
         assertEquals(EXPECTED_RESPONSE_FOR_CREATE.getBody().getSuccess().get(0).getPath(), uriResponseEntity.getBody().getSuccess().get(0).getPath());
         assertEquals(EXPECTED_RESPONSE_FOR_CREATE.getBody().getSuccess().get(0).getData(), uriResponseEntity.getBody().getSuccess().get(0).getData());
     }
+
+    @Test
+    public void givenValidRequest_UpdateExistingData_WithBatchLimit_ShouldCallSaveEncrypted() {
+        Integer batchLimit = 3;
+        sut.updateExistingData(batchLimit);
+        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+        verify(circumstancesService).saveEncrypted(captor.capture());
+        assertThat(captor.getValue(), is(batchLimit));
+    }
+
+    @Test
+    public void givenValidRequest_UpdateExistingData_WithoutBatchLimit_ShouldCallSaveEncrypted() {
+        Integer batchLimit = null;
+        sut.updateExistingData(batchLimit);
+        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+        verify(circumstancesService).saveEncrypted(captor.capture());
+        assertThat(captor.getValue(), is(ReflectionTestUtils.getField(sut.getClass(), "BATCH_LIMIT")));
+    }
+
+
 }

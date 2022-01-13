@@ -18,6 +18,7 @@ import uk.gov.dwp.jsa.circumstances.service.models.http.CircumstancesRequest;
 import uk.gov.dwp.jsa.circumstances.service.models.http.CircumstancesResponse;
 import uk.gov.dwp.jsa.circumstances.service.repositories.CircumstancesRepository;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -47,6 +48,11 @@ public class CircumstancesServiceTest {
 
     private static final CircumstancesResponse EXPECTED_CIRCUMSTANCES_RESPONSE = new CircumstancesResponse(EXPECTED_CLAIM_CIRCUMSTANCES);
 
+    private static final int BATCH_LIMIT = 7;
+
+    private static final ArrayList<ClaimCircumstances> circumstancesList =
+            new ArrayList<ClaimCircumstances>() {{ add(EXPECTED_CLAIM_CIRCUMSTANCES); }};
+
 
     private CircumstancesService sut;
 
@@ -64,6 +70,7 @@ public class CircumstancesServiceTest {
         when(repository.save(any())).thenReturn(EXPECTED_CLAIM_CIRCUMSTANCES);
         when(repository.findById(EXPECTED_CLAIM_CIRCUMSTANCES_ID)).thenReturn(Optional.of(EXPECTED_CLAIM_CIRCUMSTANCES));
         when(repository.findByClaimantId(VALID_CLAIMANT_ID.toString())).thenReturn(Optional.of(EXPECTED_CLAIM_CIRCUMSTANCES));
+        when(repository.findUnencryptedCircumstances(BATCH_LIMIT)).thenReturn(circumstancesList);
     }
 
     @Test
@@ -134,6 +141,12 @@ public class CircumstancesServiceTest {
     @Test(expected = CircumstancesAlreadyExistsException.class)
     public void givenWrongRequest_WhenUpdate_ThenException(){
         sut.update(UUID.randomUUID(),CIRCUMSTANCES_REQUEST);
+    }
+
+    @Test
+    public void givenValidExistingDataRequest_CallsSaveAll(){
+        sut.saveEncrypted(BATCH_LIMIT);
+        verify(repository).saveAll(circumstancesList);
     }
 
     private static ClaimCircumstances buildExpectedCircumstances() {

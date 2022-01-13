@@ -25,7 +25,7 @@ import uk.gov.dwp.jsa.circumstances.service.models.db.ClaimCircumstances;
 import uk.gov.dwp.jsa.circumstances.service.models.http.CircumstancesRequest;
 import uk.gov.dwp.jsa.circumstances.service.models.http.CircumstancesResponse;
 import uk.gov.dwp.jsa.circumstances.service.services.CircumstancesService;
-import uk.gov.dwp.jsa.security.integration.security.WithMockUser;
+import uk.gov.dwp.jsa.security.WithMockUser;
 import uk.gov.dwp.jsa.security.roles.Role;
 
 import java.net.URI;

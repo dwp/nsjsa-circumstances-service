@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import uk.gov.dwp.jsa.adaptors.enums.UserType;
@@ -17,6 +18,7 @@ import uk.gov.dwp.jsa.circumstances.service.models.http.CircumstancesRequest;
 import uk.gov.dwp.jsa.circumstances.service.models.http.CircumstancesResponse;
 import uk.gov.dwp.jsa.circumstances.service.repositories.CircumstancesRepository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -53,6 +55,12 @@ public class CircumstancesService {
 
     }
 
+    @Async
+    public void saveEncrypted(final int batchLimit) {
+        List<ClaimCircumstances> claimCircumstancesList = repository.findUnencryptedCircumstances(batchLimit);
+        claimCircumstancesList.stream().forEach(c -> c.setEncryptedJson(true));
+        repository.saveAll(claimCircumstancesList);
+    }
 
     public UUID update(final UUID uuid, final CircumstancesRequest circumstancesRequest) {
         ClaimCircumstances claimCircumstances =

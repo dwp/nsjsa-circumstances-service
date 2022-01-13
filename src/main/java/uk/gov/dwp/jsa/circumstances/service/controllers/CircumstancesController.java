@@ -37,6 +37,7 @@ import static uk.gov.dwp.jsa.circumstances.service.config.WithVersionUriComponen
 @RequestMapping("/nsjsa/" + VERSION_SPEL)
 public class CircumstancesController {
     private static final Logger LOGGER = LoggerFactory.getLogger(CircumstancesController.class);
+    private static final int BATCH_LIMIT = 3000;
 
     private final CircumstancesService circumstancesService;
     private final WithVersionUriComponentsBuilder uriBuilder;
@@ -125,6 +126,16 @@ public class CircumstancesController {
             return buildErrorResponse();
         }
 
+    }
+
+    @PostMapping({"/existingdata/update/{batchLimit}", "/existingdata/update"})
+    public void updateExistingData(@PathVariable(required = false) final Integer batchLimit) {
+        int actualBatchLimit = BATCH_LIMIT;
+        if (batchLimit != null) {
+            actualBatchLimit = batchLimit;
+        }
+
+        circumstancesService.saveEncrypted(actualBatchLimit);
     }
 
     private String buildResourceUriFor(final UUID resourceId) {

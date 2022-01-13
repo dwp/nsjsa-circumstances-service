@@ -8,7 +8,7 @@ Not every contribution comes in the form of code. Submitting, confirming, and tr
 
 If you are familiar with DWP and know the component that is causing you a problem, you can file an issue in the corresponding GitHub project. All of our Open Source Software can be found in our [GitHub organization](https://github.com/dwp/).
 
-We ask you not to submit security concerns via GitHub. For details on submitting potential security issues please contact [workingagedigital.opensource@dwp.gov.uk](mailto:workingagedigital.opensource@dwp.gov.uk)
+We ask you not to submit security concerns via GitHub. For details on submitting potential security issues please contact [open-source@engineering.digital.dwp.gov.uk](mailto:open-source@engineering.digital.dwp.gov.uk)
 
 ## Contribution Process
 
